@@ -2,6 +2,7 @@
 
 A Model Context Protocol (MCP) server that provides LLMs with programmatic access to Google Search Console data and functionality. Built with [FastMCP](https://github.com/jlowin/fastmcp).
 
+
 ## Features
 
 ### 🛠️ Tools (13 Actions)
@@ -52,7 +53,7 @@ A Model Context Protocol (MCP) server that provides LLMs with programmatic acces
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mcp-gsc.git
+git clone https://github.com/damupi/mcp-gsc.git
 cd mcp-gsc
 
 # Install with uv (recommended)
@@ -64,6 +65,8 @@ uv pip install -e .
 
 ## Authentication Setup
 
+This server uses [FastMCP's built-in Google OAuth integration](https://fastmcp.wiki/en/integrations/google).
+
 ### Step 1: Create Google OAuth 2.0 Credentials
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
@@ -72,8 +75,9 @@ uv pip install -e .
 4. Go to **Credentials** → **Create Credentials** → **OAuth 2.0 Client ID**
 5. Configure OAuth consent screen if prompted
 6. Choose **Web application** as application type
-7. Add authorized redirect URI: `http://localhost:8000/auth/callback`
-8. Save your **Client ID** and **Client Secret**
+7. Add Authorized Javascript origins: `http://localhost`
+8. Add authorized redirect URI: `http://localhost:8000/auth/callback`
+9. Save your **Client ID** and **Client Secret**
 
 ### Step 2: Configure Environment Variables
 
