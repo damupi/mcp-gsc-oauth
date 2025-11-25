@@ -1,7 +1,7 @@
 """Google Search Console MCP Server - Prompts Module"""
 
 
-def analyze_search_performance(site_url: str, time_period: str = "last 30 days") -> str:
+async def analyze_search_performance(site_url: str, time_period: str = "last 30 days") -> str:
     """
     Generate a prompt for analyzing search performance.
     
@@ -35,7 +35,7 @@ Use the available MCP tools to gather the necessary data:
 """
 
 
-def seo_recommendations(site_url: str, focus_area: str = "general") -> str:
+async def seo_recommendations(site_url: str, focus_area: str = "general") -> str:
     """
     Generate a prompt for SEO recommendations.
     
@@ -77,7 +77,7 @@ Provide specific, actionable recommendations with expected impact.
 """
 
 
-def compare_periods(
+async def compare_periods(
     site_url: str,
     period1_start: str,
     period1_end: str,
@@ -134,7 +134,7 @@ Then compare the results and provide detailed insights.
 """
 
 
-def indexing_health_check(site_url: str) -> str:
+async def indexing_health_check(site_url: str) -> str:
     """
     Generate a prompt for checking indexing health.
     

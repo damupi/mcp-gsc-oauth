@@ -1,6 +1,6 @@
 """Google Search Console MCP Server - Main Server Module"""
 
-from fastmcp import FastMCP
+from fastmcp import FastMCP, Context
 
 from mcp_gsc import prompts, resources, tools
 
@@ -223,9 +223,9 @@ async def inspect_url(
 # ============================================================================
 
 @mcp.resource("gsc://sites", tags=["Sites"], metadata={"author": "damupi", "version": "0.1.0"})
-async def get_sites_resource() -> str:
+async def get_sites_resource(ctx: Context) -> str:
     """List all available sites in the user's Search Console account."""
-    return await resources.get_sites_list()
+    return await resources.get_sites_list(ctx)
 
 
 @mcp.resource("gsc://config", tags=["Configuration"], metadata={"author": "damupi", "version": "0.1.0"})
@@ -235,27 +235,27 @@ async def get_config_resource() -> str:
 
 
 @mcp.resource("gsc://sites/{site_url}/analytics/summary", tags=["Analytics"], metadata={"author": "damupi", "version": "0.1.0"})
-async def get_analytics_summary_resource(site_url: str) -> str:
+async def get_analytics_summary_resource(site_url: str, ctx: Context) -> str:
     """Get a summary of recent search analytics for a site (last 28 days)."""
-    return await resources.get_analytics_summary(site_url)
+    return await resources.get_analytics_summary(site_url, ctx)
 
 
 @mcp.resource("gsc://sites/{site_url}/sitemaps", tags=["Sitemaps"], metadata={"author": "damupi", "version": "0.1.0"})
-async def get_sitemaps_resource(site_url: str) -> str:
+async def get_sitemaps_resource(site_url: str, ctx: Context) -> str:
     """Get all sitemaps for a specific site."""
-    return await resources.get_site_sitemaps(site_url)
+    return await resources.get_site_sitemaps(site_url, ctx)
 
 
 @mcp.resource("gsc://sites/{site_url}/top-queries", tags=["Analytics"], metadata={"author": "damupi", "version": "0.1.0"})
-async def get_top_queries_resource(site_url: str) -> str:
+async def get_top_queries_resource(site_url: str, ctx: Context) -> str:
     """Get top performing queries for a site (last 7 days, top 10)."""
-    return await resources.get_top_queries(site_url)
+    return await resources.get_top_queries(site_url, ctx)
 
 
 @mcp.resource("gsc://sites/{site_url}/top-pages", tags=["Analytics"], metadata={"author": "damupi", "version": "0.1.0"})
-async def get_top_pages_resource(site_url: str) -> str:
+async def get_top_pages_resource(site_url: str, ctx: Context) -> str:
     """Get top performing pages for a site (last 7 days, top 10)."""
-    return await resources.get_top_pages(site_url)
+    return await resources.get_top_pages(site_url, ctx)
 
 
 # ============================================================================

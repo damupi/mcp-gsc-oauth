@@ -3,6 +3,7 @@
 from typing import Any, Optional
 
 from fastmcp import Context
+from fastmcp.server.dependencies import get_access_token
 
 from .auth import get_gsc_service
 from .utils import format_analytics_response, format_error_message, validate_date
@@ -41,9 +42,8 @@ async def query_search_analytics(
             raise ValueError("Dates must be in YYYY-MM-DD format")
         
         # Get access token from FastMCP
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         # Get authenticated service
         service = get_gsc_service(access_token)
@@ -95,9 +95,8 @@ async def list_sitemaps(
         if ctx:
             await ctx.info(f"Listing sitemaps for {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -139,9 +138,8 @@ async def get_sitemap(
         if ctx:
             await ctx.info(f"Getting sitemap {feedpath} for {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -179,9 +177,8 @@ async def submit_sitemap(
         if ctx:
             await ctx.info(f"Submitting sitemap {feedpath} for {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -225,9 +222,8 @@ async def delete_sitemap(
         if ctx:
             await ctx.info(f"Deleting sitemap {feedpath} for {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -267,9 +263,8 @@ async def list_sites(
         if ctx:
             await ctx.info("Listing all sites")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -309,9 +304,8 @@ async def get_site(
         if ctx:
             await ctx.info(f"Getting site information for {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -344,9 +338,8 @@ async def add_site(
         if ctx:
             await ctx.info(f"Adding site {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -385,9 +378,8 @@ async def delete_site(
         if ctx:
             await ctx.info(f"Deleting site {site_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
@@ -430,9 +422,8 @@ async def inspect_url(
         if ctx:
             await ctx.info(f"Inspecting URL {inspection_url}")
         
-        from fastmcp.server.dependencies import get_access_token
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         

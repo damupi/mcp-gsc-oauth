@@ -1,12 +1,14 @@
 """Google Search Console MCP Server - Resources Module"""
 
 from typing import Any, Optional
+from fastmcp import Context
+from fastmcp.server.dependencies import get_access_token
 
 from .auth import get_gsc_service
 from .utils import decode_site_url, format_analytics_response, format_error_message, get_date_range
 
 
-async def get_sites_list() -> str:
+async def get_sites_list(ctx: Context = None) -> str:
     """
     Resource: gsc://sites
     List all available sites in the user's Search Console account.
@@ -15,14 +17,26 @@ async def get_sites_list() -> str:
         JSON string with list of sites and permission levels
     """
     try:
-        from fastmcp.server.dependencies import get_access_token
+        if ctx:
+            ctx.info("Requesting access token for gsc://sites")
+
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
+        
+        if ctx:
+            ctx.info(f"Got access token (type: {type(token)})")
         
         service = get_gsc_service(access_token)
+        
+        if ctx:
+            ctx.info("Calling Google Search Console API: sites.list")
+            
         response = service.sites().list().execute()
         
         sites = response.get('siteEntry', [])
+        
+        if ctx:
+            ctx.info(f"Found {len(sites)} sites")
         
         import json
         return json.dumps({
@@ -31,6 +45,9 @@ async def get_sites_list() -> str:
         }, indent=2)
         
     except Exception as e:
+        if ctx:
+            ctx.error(f"Error in get_sites_list: {e}")
+            
         import json
         return json.dumps({
             'error': format_error_message(e)
@@ -59,7 +76,7 @@ async def get_config() -> str:
     }, indent=2)
 
 
-async def get_analytics_summary(site_url: str) -> str:
+async def get_analytics_summary(site_url: str, ctx: Context = None) -> str:
     """
     Resource: gsc://sites/{site_url}/analytics/summary
     Get a summary of recent search analytics for a site (last 28 days).
@@ -74,14 +91,19 @@ async def get_analytics_summary(site_url: str) -> str:
         # Decode the site URL
         decoded_url = decode_site_url(site_url)
         
-        from fastmcp.server.dependencies import get_access_token
+        if ctx:
+            ctx.info(f"Getting analytics summary for {decoded_url}")
+        
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
         # Get last 28 days of data
         start_date, end_date = get_date_range(28)
+        
+        if ctx:
+            ctx.info(f"Querying analytics for period: {start_date} to {end_date}")
         
         request_body = {
             'startDate': start_date,
@@ -108,13 +130,16 @@ async def get_analytics_summary(site_url: str) -> str:
         return json.dumps(summary, indent=2)
         
     except Exception as e:
+        if ctx:
+            ctx.error(f"Error in get_analytics_summary: {e}")
+            
         import json
         return json.dumps({
             'error': format_error_message(e)
         }, indent=2)
 
 
-async def get_site_sitemaps(site_url: str) -> str:
+async def get_site_sitemaps(site_url: str, ctx: Context = None) -> str:
     """
     Resource: gsc://sites/{site_url}/sitemaps
     Get all sitemaps for a specific site.
@@ -128,15 +153,20 @@ async def get_site_sitemaps(site_url: str) -> str:
     try:
         decoded_url = decode_site_url(site_url)
         
-        from fastmcp.server.dependencies import get_access_token
+        if ctx:
+            ctx.info(f"Getting sitemaps for {decoded_url}")
+        
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
         response = service.sitemaps().list(siteUrl=decoded_url).execute()
         
         sitemaps = response.get('sitemap', [])
+        
+        if ctx:
+            ctx.info(f"Found {len(sitemaps)} sitemaps")
         
         import json
         return json.dumps({
@@ -146,13 +176,16 @@ async def get_site_sitemaps(site_url: str) -> str:
         }, indent=2)
         
     except Exception as e:
+        if ctx:
+            ctx.error(f"Error in get_site_sitemaps: {e}")
+            
         import json
         return json.dumps({
             'error': format_error_message(e)
         }, indent=2)
 
 
-async def get_top_queries(site_url: str) -> str:
+async def get_top_queries(site_url: str, ctx: Context = None) -> str:
     """
     Resource: gsc://sites/{site_url}/top-queries
     Get top performing queries for a site (last 7 days, top 10).
@@ -166,14 +199,19 @@ async def get_top_queries(site_url: str) -> str:
     try:
         decoded_url = decode_site_url(site_url)
         
-        from fastmcp.server.dependencies import get_access_token
+        if ctx:
+            ctx.info(f"Getting top queries for {decoded_url}")
+        
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
         # Get last 7 days of data
         start_date, end_date = get_date_range(7)
+        
+        if ctx:
+            ctx.info(f"Querying top queries for period: {start_date} to {end_date}")
         
         request_body = {
             'startDate': start_date,
@@ -197,13 +235,16 @@ async def get_top_queries(site_url: str) -> str:
         }, indent=2)
         
     except Exception as e:
+        if ctx:
+            ctx.error(f"Error in get_top_queries: {e}")
+            
         import json
         return json.dumps({
             'error': format_error_message(e)
         }, indent=2)
 
 
-async def get_top_pages(site_url: str) -> str:
+async def get_top_pages(site_url: str, ctx: Context = None) -> str:
     """
     Resource: gsc://sites/{site_url}/top-pages
     Get top performing pages for a site (last 7 days, top 10).
@@ -217,14 +258,19 @@ async def get_top_pages(site_url: str) -> str:
     try:
         decoded_url = decode_site_url(site_url)
         
-        from fastmcp.server.dependencies import get_access_token
+        if ctx:
+            ctx.info(f"Getting top pages for {decoded_url}")
+        
         token = get_access_token()
-        access_token = token.access_token
+        access_token = str(token)
         
         service = get_gsc_service(access_token)
         
         # Get last 7 days of data
         start_date, end_date = get_date_range(7)
+        
+        if ctx:
+            ctx.info(f"Querying top pages for period: {start_date} to {end_date}")
         
         request_body = {
             'startDate': start_date,
@@ -248,6 +294,9 @@ async def get_top_pages(site_url: str) -> str:
         }, indent=2)
         
     except Exception as e:
+        if ctx:
+            ctx.error(f"Error in get_top_pages: {e}")
+            
         import json
         return json.dumps({
             'error': format_error_message(e)
